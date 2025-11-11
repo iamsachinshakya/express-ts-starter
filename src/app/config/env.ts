@@ -6,20 +6,30 @@ dotenv.config();
 
 // Define & validate environment schema
 const envSchema = z.object({
+    // Server
     NODE_ENV: z.enum(Environment).default(Environment.DEVELOPMENT),
     PORT: z
         .string()
         .regex(/^\d+$/, { message: "PORT must be a number" })
         .default("5000"),
 
-    MONGODB_URI: z.string().url().optional(),
-    JWT_SECRET: z.string().min(8, "JWT_SECRET must be at least 8 characters").optional(),
-    LOG_LEVEL: z
-        .enum(LogLevel)
-        .default(LogLevel.DEBUG),
+    // Database
+    MONGODB_URI: z.string().optional(),
+    DB_NAME: z.string().optional(),
 
-    // Optional cloud configuration keys
-    CLOUDINARY_URL: z.string().optional(),
+    // JWT
+    ACCESS_TOKEN_SECRET: z.string().min(8, "ACCESS_TOKEN_SECRET must be at least 8 characters").optional(),
+    ACCESS_TOKEN_EXPIRY: z.string().optional(),
+    REFRESH_TOKEN_SECRET: z.string().min(8, "REFRESH_TOKEN_SECRET must be at least 8 characters").optional(),
+    REFRESH_TOKEN_EXPIRY: z.string().optional(),
+
+    // Logging
+    LOG_LEVEL: z.enum(LogLevel).default(LogLevel.DEBUG),
+
+    // Optional integrations
+    CLOUDINARY_CLOUD_NAME: z.string().optional(),
+    CLOUDINARY_API_KEY: z.string().optional(),
+    CLOUDINARY_API_SECRET: z.string().optional(),
     REDIS_URL: z.string().optional(),
 });
 
