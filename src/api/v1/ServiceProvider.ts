@@ -1,11 +1,14 @@
 import { AuthService } from "./modules/auth/services/auth.service";
 import { IAuthService } from "./modules/auth/services/auth.service.interface";
+import { CategoryService } from "./modules/category/services/category.service";
+import { ICategoryService } from "./modules/category/services/category.service.interface";
 import { UserService } from "./modules/users/services/user.service";
 import { IUserService } from "./modules/users/services/user.service.interface";
 
 export class ServiceProvider {
     static _authServiceInstance: AuthService;
     static _userServiceInstance: UserService;
+    static _categoryServiceInstance: CategoryService;
 
     static get authService(): IAuthService {
         if (!this._authServiceInstance)
@@ -17,5 +20,11 @@ export class ServiceProvider {
         if (!this._userServiceInstance)
             this._userServiceInstance = new UserService();
         return this._userServiceInstance;
+    }
+
+    static get categoryService(): ICategoryService {
+        if (!this._categoryServiceInstance)
+            this._categoryServiceInstance = new CategoryService();
+        return this._categoryServiceInstance;
     }
 }

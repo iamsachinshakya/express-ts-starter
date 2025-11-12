@@ -1,40 +1,70 @@
-import express from "express";
+import { Router } from "express";
 import { ControllerProvider } from "../../../ControllerProvider";
-import { validateBody } from "../../../common/middlewares/validate.middleware";
-import { registerUserSchema, updatePasswordSchema } from "../../users/validations/user.validation";
 import { asyncHandler } from "../../../common/utils/asyncHandler";
 import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
+import { validateBody } from "../../../common/middlewares/validate.middleware";
+import {
+  registerUserSchema,
+  updatePasswordSchema,
+  loginUserSchema,
+} from "../../users/validations/user.validation";
 
-
-const router = express.Router();
+export const authRouter = Router();
 const authController = ControllerProvider.authController;
 
-router.route("/register").post(
+/**
+ * @route   POST /api/v1/auth/register
+ * @desc    Register a new user
+ * @access  Public
+ */
+authRouter.post(
+  "/register",
   validateBody(registerUserSchema),
-  asyncHandler(authController.register.bind(authController)),
+  asyncHandler(authController.register.bind(authController))
 );
 
-router
-  .route("/login")
-  .post(asyncHandler(authController.login.bind(authController)));
-router
-  .route("/refresh-token")
-  .post(asyncHandler(authController.refreshAccessToken.bind(authController)));
+/**
+ * @route   POST /api/v1/auth/login
+ * @desc    Login and get access + refresh tokens
+ * @access  Public
+ */
+authRouter.post(
+  "/login",
+  validateBody(loginUserSchema),
+  asyncHandler(authController.login.bind(authController))
+);
 
-//secured routes
-router
-  .route("/logout")
-  .post(
-    authenticateJWT,
-    asyncHandler(authController.logout.bind(authController))
-  );
+/**
+ * @route   POST /api/v1/auth/refresh-token
+ * @desc    Refresh access token using a valid refresh token
+ * @access  Public
+ */
+authRouter.post(
+  "/refresh-token",
+  asyncHandler(authController.refreshAccessToken.bind(authController))
+);
 
-router
-  .route("/change-password")
-  .post(
-    authenticateJWT,
-    validateBody(updatePasswordSchema),
-    asyncHandler(authController.changePassword.bind(authController))
-  );
+/**
+ * @route   POST /api/v1/auth/logout
+ * @desc    Logout the current user and invalidate tokens
+ * @access  Private
+ */
+authRouter.post(
+  "/logout",
+  authenticateJWT,
+  asyncHandler(authController.logout.bind(authController))
+);
 
-export const authRouter = router;
+/**
+ * @route   POST /api/v1/auth/change-password
+ * @desc    Change password for the logged-in user
+ * @access  Private
+ */
+authRouter.post(
+  "/change-password",
+  authenticateJWT,
+  validateBody(updatePasswordSchema),
+  asyncHandler(authController.changePassword.bind(authController))
+);
+
+export default authRouter;

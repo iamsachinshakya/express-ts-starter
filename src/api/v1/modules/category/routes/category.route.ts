@@ -1,0 +1,74 @@
+import { Router } from "express";
+import { asyncHandler } from "../../../common/utils/asyncHandler";
+import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
+import { ControllerProvider } from "../../../ControllerProvider";
+import { validateBody, validateFileSchema } from "../../../common/middlewares/validate.middleware";
+import { uploadSingle } from "../../../common/middlewares/upload.middleware";
+import { imageSchema } from "../../users/validations/user.validation";
+import { createCategorySchema, updateCategorySchema } from "../validations/category.validation";
+
+export const categoryRouter = Router();
+const categoryController = ControllerProvider.categoryController;
+
+/**
+ * @route   GET /api/v1/categories
+ * @desc    Get all categories (with optional filters)
+ * @access  Private (JWT required)
+ */
+categoryRouter.get(
+    "/",
+    authenticateJWT,
+    asyncHandler(categoryController.getAll.bind(categoryController))
+);
+
+/**
+ * @route   GET /api/v1/categories/:id
+ * @desc    Get a category by ID
+ * @access  Private
+ */
+categoryRouter.get(
+    "/:id",
+    authenticateJWT,
+    asyncHandler(categoryController.getById.bind(categoryController))
+);
+
+/**
+ * @route   POST /api/v1/categories
+ * @desc    Create a new category with optional icon
+ * @access  Private
+ */
+categoryRouter.post(
+    "/",
+    authenticateJWT,
+    uploadSingle("icon"), // optional field, no error if missing
+    validateFileSchema(imageSchema, { optional: true }),
+    validateBody(createCategorySchema),
+    asyncHandler(categoryController.create.bind(categoryController))
+);
+
+/**
+ * @route   PATCH /api/v1/categories/:id
+ * @desc    Update category details (icon optional)
+ * @access  Private
+ */
+categoryRouter.patch(
+    "/:id",
+    authenticateJWT,
+    uploadSingle("icon"), // optional field
+    validateFileSchema(imageSchema, { optional: true }),
+    validateBody(updateCategorySchema),
+    asyncHandler(categoryController.update.bind(categoryController))
+);
+
+/**
+ * @route   DELETE /api/v1/categories/:id
+ * @desc    Soft delete category (can pass ?soft=false for hard delete)
+ * @access  Private
+ */
+categoryRouter.delete(
+    "/:id",
+    authenticateJWT,
+    asyncHandler(categoryController.delete.bind(categoryController))
+);
+
+export default categoryRouter;

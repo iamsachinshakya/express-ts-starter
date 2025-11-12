@@ -1,0 +1,34 @@
+import { ICategoryEntity, ICreateCategory, IUpdateCategory } from "../models/category.model.interface";
+
+export interface ICategoryService {
+    /**
+     * Get all categories with optional filters
+     */
+    getCategories(filter?: Partial<ICategoryEntity>): Promise<ICategoryEntity[]>;
+
+    /**
+     * Get a category by its ID
+     * @param categoryId - ID of the category
+     */
+    getCategoryById(categoryId: string): Promise<ICategoryEntity | null>;
+
+    /**
+     * Create a new category
+     * @param data - Category creation data from user
+     */
+    createCategory(data: ICreateCategory, file: Express.Multer.File): Promise<ICategoryEntity>;
+
+    /**
+     * Update an existing category
+     * @param categoryId - ID of the category
+     * @param data - Partial update data
+     */
+    updateCategory(categoryId: string, data: IUpdateCategory, file: Express.Multer.File): Promise<ICategoryEntity | null>;
+
+    /**
+     * Delete a category by ID
+     * @param categoryId - ID of the category
+     * @param soft - Soft delete by default, hard delete if false
+     */
+    deleteCategory(categoryId: string, soft?: boolean): Promise<boolean>;
+}

@@ -34,13 +34,19 @@ export const validateBody = (schema: ZodTypeAny): RequestHandler => {
  *   }),
  * });
  */
-export const validateFileSchema = (schema: ZodTypeAny): RequestHandler => {
+export const validateFileSchema = (
+  schema: ZodTypeAny,
+  options?: { optional?: boolean } // Add this
+): RequestHandler => {
   return (req: Request, _res: Response, next: NextFunction) => {
     try {
       if (req.file) {
         schema.parse({ file: req.file, body: req.body });
       } else if (Array.isArray(req.files)) {
         schema.parse({ files: req.files, body: req.body });
+      } else if (options?.optional) {
+        // Skip validation if optional and no file
+        return next();
       } else {
         throw new ApiError("No file(s) provided", 400);
       }
