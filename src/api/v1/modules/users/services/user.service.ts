@@ -70,13 +70,14 @@ export class UserService implements IUserService {
 
   // ✅ Update avatar
   async updateAvatar(userId: string, file: Express.Multer.File): Promise<IUserEntity> {
-    const avatarLocalPath = file?.path;
-    if (!avatarLocalPath) throw new ApiError("Avatar file is missing", 400);
+    if (!file?.buffer) throw new ApiError("Avatar file is missing", 400);
 
-    const avatar = await uploadOnCloudinary(avatarLocalPath);
-    if (!avatar?.url) throw new ApiError("Failed to upload avatar", 400);
+    const avatar = await uploadOnCloudinary(file.buffer, userId, "avatars");
+    if (!avatar?.secure_url) throw new ApiError("Failed to upload avatar", 400);
 
-    const user = await RepositoryProvider.userRepository.updateById(userId, { avatar: avatar.url });
+    const user = await RepositoryProvider.userRepository.updateById(userId, {
+      avatar: avatar.secure_url,
+    });
 
     if (!user) throw new ApiError("User not found", 404);
     return user;

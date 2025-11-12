@@ -1,5 +1,4 @@
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import fs from "fs";
 import { env } from "../../../../app/config/env";
 import logger from "../../../../app/utils/logger";
 
@@ -11,46 +10,40 @@ cloudinary.config({
 });
 
 /**
- * Uploads a file to Cloudinary and deletes the local file after upload
- * @param localFilePath - Path to the local file
+ * Uploads a buffer to Cloudinary
+ * @param buffer - File buffer from multer memoryStorage
+ * @param filename - Original filename (used as public_id)
+ * @param folder - Optional Cloudinary folder
  * @returns Cloudinary upload response or null on failure
  */
 export const uploadOnCloudinary = async (
-  localFilePath: string
+  buffer: Buffer,
+  filename: string,
+  folder: string = "uploads"
 ): Promise<UploadApiResponse | null> => {
-  if (!localFilePath) {
-    logger.warn("No file path provided for Cloudinary upload");
+  if (!buffer || !filename) {
+    logger.warn("No buffer or filename provided for Cloudinary upload");
     return null;
   }
 
   try {
-    logger.info(`Uploading to Cloudinary: ${localFilePath}`);
+    logger.info(`Uploading to Cloudinary: ${filename}`);
 
-    const response: UploadApiResponse = await cloudinary.uploader.upload(
-      localFilePath,
-      {
-        resource_type: "auto",
-      }
-    );
+    const response: UploadApiResponse = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder, public_id: filename.split(".")[0], resource_type: "auto" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result as UploadApiResponse);
+        }
+      );
+      stream.end(buffer);
+    });
 
     logger.info(`✅ File uploaded successfully: ${response.secure_url}`);
-
-    // Delete local file after successful upload
-    if (fs.existsSync(localFilePath)) {
-      fs.unlinkSync(localFilePath);
-      logger.debug(`Deleted local file: ${localFilePath}`);
-    }
-
     return response;
   } catch (error: any) {
     logger.error(`❌ Cloudinary upload failed: ${error.message}`);
-
-    // Attempt to delete local file even on failure
-    if (fs.existsSync(localFilePath)) {
-      fs.unlinkSync(localFilePath);
-      logger.debug(`Deleted local file after failed upload: ${localFilePath}`);
-    }
-
     return null;
   }
 };
