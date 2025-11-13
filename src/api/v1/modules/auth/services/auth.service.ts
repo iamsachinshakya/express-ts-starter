@@ -1,7 +1,7 @@
 import { env } from "../../../../../app/config/env";
 import { ApiError } from "../../../common/utils/apiError";
 import { RepositoryProvider } from "../../../RepositoryProvider";
-import { ICreateUser, IUserEntity } from "../../users/models/user.model.interface";
+import { IAuthUser, ICreateUser, IUserEntity } from "../../users/models/user.model.interface";
 import { comparePassword, hashPassword } from "../utils/bcrypt.util";
 import {
   generateAccessToken,
@@ -48,13 +48,15 @@ export class AuthService implements IAuthService {
     const user = await RepositoryProvider.userRepository.findById(userId);
     if (!user) throw new ApiError("User not found", 401);
 
-    const accessToken = generateAccessToken({
+    const payload: IAuthUser = {
       id: user.id,
       email: user.email,
       username: user.username,
       fullName: user.fullName,
-    });
+      role: user.role,
+    }
 
+    const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken({ id: user.id });
     await RepositoryProvider.userRepository.updateById(user.id, { refreshToken });
 

@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { asyncHandler } from "../../../common/utils/asyncHandler";
-import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
 import { ControllerProvider } from "../../../ControllerProvider";
 import { validateBody, validateFileSchema } from "../../../common/middlewares/validate.middleware";
 import { uploadSingle } from "../../../common/middlewares/upload.middleware";
 import { imageSchema, updateUserSchema } from "../validations/user.validation";
+import { authenticateJWT } from "../../auth/middlewares/auth.middleware";
 
 export const userRouter = Router();
 const userController = ControllerProvider.userController;

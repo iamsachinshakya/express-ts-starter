@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { asyncHandler } from "../../../common/utils/asyncHandler";
-import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
 import { ControllerProvider } from "../../../ControllerProvider";
 import { validateBody, validateFileSchema, validateQuery } from "../../../common/middlewares/validate.middleware";
 import { uploadSingle } from "../../../common/middlewares/upload.middleware";
 import { imageSchema } from "../../users/validations/user.validation";
 import { createCategorySchema, queryCategorySchema, updateCategorySchema } from "../validations/category.validation";
+import { authenticateJWT } from "../../auth/middlewares/auth.middleware";
 
 export const categoryRouter = Router();
 const categoryController = ControllerProvider.categoryController;

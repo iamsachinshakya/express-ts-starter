@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { asyncHandler } from "../../../common/utils/asyncHandler";
-import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
 import { ControllerProvider } from "../../../ControllerProvider";
 import { validateBody, validateQuery } from "../../../common/middlewares/validate.middleware";
 import { createBlogSchema, queryBlogSchema, scheduleBlogSchema, updateBlogSchema } from "../validations/blog.validation";
+import { authenticateJWT } from "../../auth/middlewares/auth.middleware";
 
 export const blogRouter = Router();
 const blogController = ControllerProvider.blogController;

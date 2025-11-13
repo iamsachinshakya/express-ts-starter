@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { ControllerProvider } from "../../../ControllerProvider";
 import { asyncHandler } from "../../../common/utils/asyncHandler";
-import { authenticateJWT } from "../../../common/middlewares/auth.middleware";
 import { validateBody } from "../../../common/middlewares/validate.middleware";
 import {
   registerUserSchema,
   updatePasswordSchema,
   loginUserSchema,
 } from "../../users/validations/user.validation";
+import { authenticateJWT } from "../middlewares/auth.middleware";
 
 export const authRouter = Router();
 const authController = ControllerProvider.authController;

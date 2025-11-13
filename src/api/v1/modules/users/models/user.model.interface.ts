@@ -56,6 +56,7 @@ export interface IAuthUser {
     email: string,
     username: string,
     fullName: string,
+    role: UserRole,
 }
 
 export interface IUpdateUser {
