@@ -40,4 +40,8 @@ export interface IUpdateCategory {
     color?: string; // Optional hex color
     parentId?: string | null; // Optional parent category ID
     isActive?: boolean; // Optional active flag
+    icon?: string; // Optional not for validation it updated via service layer
+    slug?: string; // Optional not for validation it updated via service layer
+
+
 }

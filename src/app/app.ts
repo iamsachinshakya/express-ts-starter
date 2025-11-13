@@ -10,6 +10,7 @@ import { errorMiddleware } from "../api/v1/common/middlewares/error.middleware";
 import { ApiResponse } from "../api/v1/common/utils/apiResponse";
 import { userRouter } from "../api/v1/modules/users/routes/user.routes";
 import { categoryRouter } from "../api/v1/modules/category/routes/category.route";
+import blogRouter from "../api/v1/modules/blog/routes/blog.route";
 
 const app = express();
 app.use(
@@ -35,6 +36,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/blogs", blogRouter);
 
 // ✅ Catch-all for unmatched routes (Express 5 safe)
 app.use((req: Request, res: Response, next: NextFunction) => {

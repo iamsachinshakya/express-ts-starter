@@ -1,14 +1,17 @@
 import { AuthService } from "./modules/auth/services/auth.service";
 import { IAuthService } from "./modules/auth/services/auth.service.interface";
+import { BlogService } from "./modules/blog/services/blog.service";
+import { IBlogService } from "./modules/blog/services/blog.service.interface";
 import { CategoryService } from "./modules/category/services/category.service";
 import { ICategoryService } from "./modules/category/services/category.service.interface";
 import { UserService } from "./modules/users/services/user.service";
 import { IUserService } from "./modules/users/services/user.service.interface";
 
 export class ServiceProvider {
-    static _authServiceInstance: AuthService;
-    static _userServiceInstance: UserService;
-    static _categoryServiceInstance: CategoryService;
+    private static _authServiceInstance: AuthService;
+    private static _userServiceInstance: UserService;
+    private static _categoryServiceInstance: CategoryService;
+    private static _blogServiceInstance: BlogService;
 
     static get authService(): IAuthService {
         if (!this._authServiceInstance)
@@ -26,5 +29,11 @@ export class ServiceProvider {
         if (!this._categoryServiceInstance)
             this._categoryServiceInstance = new CategoryService();
         return this._categoryServiceInstance;
+    }
+
+    static get blogService(): IBlogService {
+        if (!this._blogServiceInstance)
+            this._blogServiceInstance = new BlogService();
+        return this._blogServiceInstance;
     }
 }

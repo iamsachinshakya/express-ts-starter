@@ -1,13 +1,16 @@
 import { AuthController } from "./modules/auth/controllers/auth.controller";
 import { IAuthController } from "./modules/auth/controllers/auth.controller.interface";
+import { BlogController } from "./modules/blog/controllers/blog.controller";
+import { IBlogController } from "./modules/blog/controllers/blog.controller.interface";
 import { CategoryController } from "./modules/category/controllers/category.controller";
 import { ICategoryController } from "./modules/category/controllers/category.controller.interface";
 import { UserController } from "./modules/users/controllers/user.controller";
 import { IUserController } from "./modules/users/controllers/user.controller.interface";
 export class ControllerProvider {
-    static _userControllerInstance: UserController;
-    static _authControllerInstance: AuthController;
-    static _categoryControllerInstance: CategoryController
+    private static _userControllerInstance: UserController;
+    private static _authControllerInstance: AuthController;
+    private static _categoryControllerInstance: CategoryController
+    private static _blogControllerInstance: BlogController;
 
     static get userController(): IUserController {
         if (!this._userControllerInstance)
@@ -25,5 +28,11 @@ export class ControllerProvider {
         if (!this._categoryControllerInstance)
             this._categoryControllerInstance = new CategoryController();
         return this._categoryControllerInstance;
+    }
+
+    static get blogController(): IBlogController {
+        if (!this._blogControllerInstance)
+            this._blogControllerInstance = new BlogController();
+        return this._blogControllerInstance;
     }
 }
