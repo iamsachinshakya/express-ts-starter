@@ -4,6 +4,8 @@ import { BlogController } from "./modules/blog/controllers/blog.controller";
 import { IBlogController } from "./modules/blog/controllers/blog.controller.interface";
 import { CategoryController } from "./modules/category/controllers/category.controller";
 import { ICategoryController } from "./modules/category/controllers/category.controller.interface";
+import { CommentController } from "./modules/comments/controllers/comment.controller";
+import { ICommentController } from "./modules/comments/controllers/comment.controller.interface";
 import { UserController } from "./modules/users/controllers/user.controller";
 import { IUserController } from "./modules/users/controllers/user.controller.interface";
 export class ControllerProvider {
@@ -11,6 +13,7 @@ export class ControllerProvider {
     private static _authControllerInstance: AuthController;
     private static _categoryControllerInstance: CategoryController
     private static _blogControllerInstance: BlogController;
+    private static _commentControllerInstance: CommentController;
 
     static get userController(): IUserController {
         if (!this._userControllerInstance)
@@ -35,4 +38,11 @@ export class ControllerProvider {
             this._blogControllerInstance = new BlogController();
         return this._blogControllerInstance;
     }
+    static get commentController(): ICommentController {
+        if (!this._commentControllerInstance)
+            this._commentControllerInstance = new CommentController();
+        return this._commentControllerInstance;
+    }
+
+
 }

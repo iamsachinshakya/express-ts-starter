@@ -2,6 +2,8 @@ import { IBlogRepository } from "./modules/blog/repositories/blog.repository.int
 import { MongoBlogRepository } from "./modules/blog/repositories/mongodb/blog.repository";
 import { ICategoryRepository } from "./modules/category/repositories/category.repository.interface";
 import { MongoCategoryRepository } from "./modules/category/repositories/mongodb/category.repository";
+import { ICommentRepository } from "./modules/comments/repositories/comment.repository.interface";
+import { CommentRepository } from "./modules/comments/repositories/mongodb/comment.repository";
 import { MongoUserRepository } from "./modules/users/repositories/mongodb/user.repository";
 import { IUserRepository } from "./modules/users/repositories/user.repository.interface";
 
@@ -9,6 +11,7 @@ export class RepositoryProvider {
     private static _userRepositoryInstance: MongoUserRepository;
     private static _categoryRepositoryInstance: MongoCategoryRepository;
     private static _blogRepositoryInstance: MongoBlogRepository;
+    private static _commentRepositoryInstance: CommentRepository;
 
     static get userRepository(): IUserRepository {
         if (!this._userRepositoryInstance)
@@ -27,4 +30,12 @@ export class RepositoryProvider {
             this._blogRepositoryInstance = new MongoBlogRepository();
         return this._blogRepositoryInstance;
     }
+
+    static get commentRepository(): ICommentRepository {
+        if (!this._commentRepositoryInstance)
+            this._commentRepositoryInstance = new CommentRepository();
+        return this._commentRepositoryInstance;
+    }
+
+
 }

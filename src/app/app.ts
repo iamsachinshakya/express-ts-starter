@@ -11,6 +11,7 @@ import { ApiResponse } from "../api/v1/common/utils/apiResponse";
 import { userRouter } from "../api/v1/modules/users/routes/user.routes";
 import { categoryRouter } from "../api/v1/modules/category/routes/category.route";
 import blogRouter from "../api/v1/modules/blog/routes/blog.route";
+import commentRouter from "../api/v1/modules/comments/routes/comment.route";
 
 const app = express();
 app.use(
@@ -37,6 +38,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/blogs", blogRouter);
+app.use("/api/v1/comments", commentRouter);
 
 // ✅ Catch-all for unmatched routes (Express 5 safe)
 app.use((req: Request, res: Response, next: NextFunction) => {

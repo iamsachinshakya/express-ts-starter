@@ -24,6 +24,7 @@ export const PERMISSIONS = {
         UPDATE: "comment:update",
         DELETE: "comment:delete",
         READ: "comment:read",
+        LIKE: "comment:like",
     },
 } as const;
 
@@ -44,6 +45,8 @@ export const RolePermissions: Record<UserRole, Set<string>> = {
         PERMISSIONS.CATEGORY.READ,
         PERMISSIONS.COMMENT.READ,
         PERMISSIONS.COMMENT.DELETE,
+        PERMISSIONS.COMMENT.CREATE,
+
     ]),
     [UserRole.AUTHOR]: new Set([
         PERMISSIONS.BLOG.CREATE,
