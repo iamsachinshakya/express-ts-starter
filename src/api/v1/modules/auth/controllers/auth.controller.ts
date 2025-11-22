@@ -12,6 +12,17 @@ export class AuthController implements IAuthController {
     return ApiResponse.success(res, "User registered successfully", user, 201);
   }
 
+  //  Get current logged-in user
+  async getCurrentUser(req: Request, res: Response): Promise<Response> {
+    const userId = req?.user?.id;
+    if (!userId) return ApiResponse.error(res, "Unauthorized user", 401);
+
+    const user = await ServiceProvider.userService.getUserById(userId);
+    if (!user) return ApiResponse.error(res, "User not found", 404);
+
+    return ApiResponse.success(res, "User fetched successfully", user);
+  }
+
   // ✅ Login user
   async login(req: Request, res: Response): Promise<Response> {
     const { user, accessToken, refreshToken } =

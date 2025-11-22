@@ -15,6 +15,17 @@ export const authRouter = Router();
 const authController = ControllerProvider.authController;
 
 /**
+ * @route   GET /api/v1/users/current-user
+ * @desc    Get details of the logged-in user
+ * @access  Private
+ */
+authRouter.get(
+  "/me",
+  authenticateJWT,
+  asyncHandler(authController.getCurrentUser.bind(authController))
+);
+
+/**
  * @route   POST /api/v1/auth/register
  * @desc    Register a new user
  * @access  Public

@@ -16,13 +16,6 @@ export interface IUserController {
     getById(req: Request, res: Response): Promise<Response>;
 
     /**
-     * Get currently logged-in user's profile
-     * @route GET /api/v1/users/current-user
-     * @access Private
-     */
-    getCurrentUser(req: Request, res: Response): Promise<Response>;
-
-    /**
      * Update account details (name, email, bio, etc.)
      * @route PATCH /api/v1/users/update-account
      * @access Private

@@ -23,17 +23,6 @@ userRouter.get(
   asyncHandler(userController.getAll.bind(userController))
 );
 
-/**
- * @route   GET /api/v1/users/current-user
- * @desc    Get details of the logged-in user
- * @access  Private
- */
-userRouter.get(
-  "/current-user",
-  authenticateJWT,
-  requirePermission(PERMISSIONS.USER.READ),
-  asyncHandler(userController.getCurrentUser.bind(userController))
-);
 
 /**
  * @route   PATCH /api/v1/users/update-account

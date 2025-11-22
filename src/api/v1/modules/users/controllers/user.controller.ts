@@ -16,11 +16,6 @@ export class UserController {
     return ApiResponse.success(res, "User fetched successfully", user);
   }
 
-  //  Get current logged-in user
-  async getCurrentUser(req: Request, res: Response): Promise<Response> {
-    return ApiResponse.success(res, "User fetched successfully", req.user);
-  }
-
   //  Update account details
   async updateAccountDetails(req: Request, res: Response): Promise<Response> {
     const updates: IUpdateUser = req.body;
