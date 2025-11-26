@@ -113,19 +113,17 @@ export class AuthController implements IAuthController {
   ----------------------------------------------------------*/
   async changePassword(req: Request, res: Response): Promise<Response> {
     const { oldPassword, newPassword } = req.body;
+    const userId = req.user?.id
 
-    if (!req.user?.id)
+    if (!userId)
       throw new ApiError(
         "User not found in request",
         401,
         ErrorCode.UNAUTHORIZED,
       );
 
-    await ServiceProvider.authService.changeUserPassword({
-      oldPassword,
-      newPassword,
-      userId: req.user.id,
-    });
+
+    await ServiceProvider.authService.changeUserPassword({ oldPassword, newPassword }, userId);
 
     return ApiResponse.success(res, "Password changed successfully");
   }

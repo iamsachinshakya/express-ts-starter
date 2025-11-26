@@ -1,7 +1,7 @@
-import { ICreateUser, IUpdateUser, IUserEntity } from "../models/user.model.interface";
+import { IRegisterData, IUpdateUser, IUserEntity } from "../models/user.model.interface";
 
 export interface IUserRepository {
-    create(data: ICreateUser): Promise<IUserEntity>;
+    create(data: IRegisterData): Promise<IUserEntity>;
     findById(id: string, isRequiredSensitiveData?: boolean): Promise<IUserEntity | null>;
     findByEmail(email: string, isRequiredSensitiveData?: boolean): Promise<IUserEntity | null>;
     findByUsername(username: string): Promise<IUserEntity | null>;

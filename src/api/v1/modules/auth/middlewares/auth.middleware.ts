@@ -57,6 +57,7 @@ export const authenticateJWT = asyncHandler(
             username: decoded.username,
             fullName: decoded.fullName,
             role: decoded.role,
+            status: decoded.status
         };
 
         next();

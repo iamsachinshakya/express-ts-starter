@@ -19,5 +19,7 @@ export enum ErrorCode {
 
     VALIDATION_ERROR = "VALIDATION_ERROR",            // Input validation failure
     BAD_REQUEST = "BAD_REQUEST",                      // Incorrect payload/invalid request
-    INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",  // Unexpected backend failure
+    INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
+    PERMISSION_DENIED = "PERMISSION_DENIED",          //  permission not allowed 
+    INVALID_ROLE = "INVALID_ROLE",                     // invalid role
 }

@@ -1,11 +1,11 @@
 
 import { SortOrder } from "mongoose";
-import { ICreateUser, IUpdateUser, IUserEntity } from "../../models/user.model.interface";
+import { IRegisterData, IUpdateUser, IUserEntity } from "../../models/user.model.interface";
 import { IUserRepository } from "../user.repository.interface";
 import { User } from "../../models/mongoose/user.model";
 
 export class MongoUserRepository implements IUserRepository {
-  async create(data: ICreateUser): Promise<IUserEntity> {
+  async create(data: IRegisterData): Promise<IUserEntity> {
     const user = await User.create(data);
     return this.toEntity(user);
   }

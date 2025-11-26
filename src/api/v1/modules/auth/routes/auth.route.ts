@@ -6,7 +6,7 @@ import {
   registerUserSchema,
   updatePasswordSchema,
   loginUserSchema,
-} from "../../users/validations/user.validation";
+} from "../../auth/validations/auth.validation";
 import { authenticateJWT } from "../middlewares/auth.middleware";
 import { requirePermission } from "../middlewares/requirePermission";
 import { PERMISSIONS } from "../constants/auth.constant";

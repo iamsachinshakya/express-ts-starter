@@ -51,11 +51,21 @@ export interface ISocialLinks {
     website: string | null;
 }
 
-export interface ICreateUser {
+export interface IRegisterData {
     fullName: string;
     email: string;
     username: string;
     password: string;
+}
+
+export interface ILoginCredentials {
+    email: string;
+    password: string;
+}
+
+export interface IChangePassword {
+    oldPassword: string,
+    newPassword: string
 }
 
 export interface IAuthUser {
@@ -63,7 +73,7 @@ export interface IAuthUser {
     email: string,
     username: string,
     fullName: string,
-    active: UserStatus
+    status: UserStatus
     role: UserRole,
 }
 
@@ -74,4 +84,6 @@ export interface IUpdateUser {
     bio?: IUserEntity["bio"];
     socialLinks?: IUserEntity["socialLinks"];
 }
+
+
 
