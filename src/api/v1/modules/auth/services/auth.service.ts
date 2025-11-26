@@ -76,6 +76,7 @@ export class AuthService implements IAuthService {
     const user = await RepositoryProvider.userRepository.findByEmail(email, true);
     if (!user) throw new ApiError("User not found", 404, ErrorCode.USER_NOT_FOUND);
     if (!user.password) throw new ApiError("User password missing in database", 500, ErrorCode.INTERNAL_SERVER_ERROR);
+    if (user.status === UserStatus.INACTIVE) throw new ApiError("User account is inactive", 403, ErrorCode.USER_INACTIVE);
 
 
     const isPasswordValid = await comparePassword(password, user.password);

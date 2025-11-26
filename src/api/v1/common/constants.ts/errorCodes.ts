@@ -22,4 +22,5 @@ export enum ErrorCode {
     INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR",
     PERMISSION_DENIED = "PERMISSION_DENIED",          //  permission not allowed 
     INVALID_ROLE = "INVALID_ROLE",                     // invalid role
+    USER_INACTIVE = "USER_INACTIVE",
 }
