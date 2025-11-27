@@ -7,9 +7,23 @@ import { imageSchema, updateUserSchema, socialLinksSchema, userPreferencesSchema
 import { authenticateJWT } from "../../auth/middlewares/auth.middleware";
 import { requirePermission } from "../../auth/middlewares/requirePermission";
 import { PERMISSIONS } from "../../auth/constants/auth.constant";
+import { registerUserSchema } from "../../auth/validations/auth.validation";
 
 export const userRouter = Router();
 const userController = ControllerProvider.userController;
+
+/**
+ * @route   POST /api/v1/users
+ * @desc    Create user 
+ * @access  Private
+ */
+userRouter.post(
+  "/",
+  authenticateJWT,
+  requirePermission(PERMISSIONS.USER.CREATE),
+  validateBody(registerUserSchema),
+  asyncHandler(userController.createUser.bind(userController))
+);
 
 /**
  * @route   GET /api/v1/users
@@ -30,7 +44,7 @@ userRouter.get(
  * @access  Private
  */
 userRouter.patch(
-  "/update-account",
+  "/:id",
   authenticateJWT,
   requirePermission(PERMISSIONS.USER.UPDATE),
   validateBody(updateUserSchema),
@@ -43,11 +57,11 @@ userRouter.patch(
  * @access  Private
  */
 userRouter.patch(
-  "/avatar",
+  "/:id/avatar",
   authenticateJWT,
   requirePermission(PERMISSIONS.USER.UPDATE),
   uploadSingle("avatar"),
-  validateFileSchema(imageSchema, { optional: true }),
+  validateFileSchema(imageSchema),
   asyncHandler(userController.updateAvatar.bind(userController))
 );
 

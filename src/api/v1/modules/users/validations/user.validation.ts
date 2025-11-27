@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UserRole, UserStatus } from "../models/user.model.interface";
 
 /**
  * Schema: Update User
@@ -33,6 +34,10 @@ export const updateUserSchema = z.object({
     .max(500, "Bio must be at most 500 characters long")
     .optional(),
 
+  status: z.enum(UserStatus).optional(),
+
+  role: z.enum(UserRole).optional(),
+
 })
   .refine(
     (data) => Object.values(data).some((v) => v !== undefined && v !== null),
@@ -41,6 +46,7 @@ export const updateUserSchema = z.object({
       path: [],
     }
   );
+
 
 export const imageSchema = z.object({
   file: z

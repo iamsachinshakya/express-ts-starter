@@ -83,19 +83,44 @@ export const validateFileSchema = (
 ): RequestHandler => {
   return (req: Request, _res: Response, next: NextFunction) => {
     try {
-      if (req.file) {
-        schema.parse({ file: req.file, body: req.body });
-      } else if (Array.isArray(req.files)) {
-        schema.parse({ files: req.files, body: req.body });
-      } else if (options?.optional) {
-        return next();
-      } else {
+
+      console.log("file ->", req.file);
+      console.log("files ->", req.files);
+      console.log("body ->", req.body);
+
+
+      const hasSingleFile = Boolean(req.file);
+      const hasMultipleFiles = Array.isArray(req.files);
+      const hasBody = req.body && Object.keys(req.body).length > 0;
+
+      const data: any = {};
+
+      if (hasSingleFile) data.file = req.file;
+      if (hasMultipleFiles) data.files = req.files;
+      if (hasBody) data.body = req.body;
+
+      // -------------------------------
+      // CASES:
+      // 1. No file + no files => check optional
+      // -------------------------------
+      if (!hasSingleFile && !hasMultipleFiles) {
+        if (options?.optional) {
+          // body-only update allowed
+          schema.parse(data);
+          return next();
+        }
+
         throw new ApiError(
           "No file(s) provided",
           400,
           ErrorCode.VALIDATION_ERROR
         );
       }
+
+      // -------------------------------
+      // Validate schema with combined data
+      // -------------------------------
+      schema.parse(data);
 
       next();
     } catch (error) {

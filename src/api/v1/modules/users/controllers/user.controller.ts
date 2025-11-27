@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
 import { ApiResponse } from "../../../common/utils/apiResponse";
 import { ServiceProvider } from "../../../ServiceProvider";
-import { ISocialLinks, IUpdateUser, IUserPreferences } from "../../users/models/user.model.interface";
+import { ISocialLinks, IUpdateUserData, IUserPreferences } from "../../users/models/user.model.interface";
 
 export class UserController {
+
+  async createUser(req: Request, res: Response): Promise<Response> {
+    const user = await ServiceProvider.userService.createUser(req.body);
+    return ApiResponse.success(res, "User Created successfully", user);
+  }
+
+
   //  Get all users
   async getAll(req: Request, res: Response): Promise<Response> {
     const users = await ServiceProvider.userService.getAllUsers();
@@ -18,9 +25,9 @@ export class UserController {
 
   //  Update account details
   async updateAccountDetails(req: Request, res: Response): Promise<Response> {
-    const updates: IUpdateUser = req.body;
+    const updates: IUpdateUserData = req.body;
     const user = await ServiceProvider.userService.updateAccountDetails(
-      req.user!.id,
+      req.params.id,
       updates
     );
     return ApiResponse.success(res, "Account details updated successfully", user);
@@ -28,7 +35,9 @@ export class UserController {
 
   //  Update avatar
   async updateAvatar(req: Request, res: Response): Promise<Response> {
-    const user = await ServiceProvider.userService.updateAvatar(req.user?.id!, req.file!);
+    console.log("req.file", req.file);
+    console.log("body", req.body)
+    const user = await ServiceProvider.userService.updateAvatar(req.params.id, req.file!);
     return ApiResponse.success(res, "Avatar updated successfully", user);
   }
 

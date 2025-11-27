@@ -2,6 +2,7 @@ import { UserRole } from "../../users/models/user.model.interface";
 
 export const PERMISSIONS = {
     USER: {
+        CREATE: "user:create",
         READ: "user:read",
         UPDATE: "user:update",
         DELETE: "user:delete",

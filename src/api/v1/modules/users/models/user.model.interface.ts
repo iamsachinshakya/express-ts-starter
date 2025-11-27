@@ -77,13 +77,29 @@ export interface IAuthUser {
     role: UserRole,
 }
 
-export interface IUpdateUser {
-    fullName?: IUserEntity["fullName"];
-    email?: IUserEntity["email"];
-    username?: IUserEntity["username"];
-    bio?: IUserEntity["bio"];
-    socialLinks?: IUserEntity["socialLinks"];
+export interface IUpdateUserData {
+    username?: string;
+    fullName?: string;
+    email?: string;
+    status?: UserStatus;
+    role?: UserRole;
+    bio?: string;
 }
 
+export interface ICreateUserData {
+    username: string;
+    fullName: string;
+    email: string;
+    status: UserStatus;
+    role: UserRole;
+    bio: string;
+    password: string
+}
 
+export interface UsersQueryParams {
+    page?: number;
+    limit?: number;
+    search?: string;
+    role?: string;
+}
 

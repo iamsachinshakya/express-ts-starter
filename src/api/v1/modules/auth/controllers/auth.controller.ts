@@ -113,7 +113,7 @@ export class AuthController implements IAuthController {
   ----------------------------------------------------------*/
   async changePassword(req: Request, res: Response): Promise<Response> {
     const { oldPassword, newPassword } = req.body;
-    const userId = req.user?.id
+    const userId = req.params.id
 
     if (!userId)
       throw new ApiError(

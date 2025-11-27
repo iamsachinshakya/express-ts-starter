@@ -1,6 +1,14 @@
 import { Request, Response } from "express";
 
 export interface IUserController {
+
+    /**
+     * Create user by admin
+     * @route Post /api/v1/users
+     * @access Private (Admin only)
+     */
+    createUser(req: Request, res: Response): Promise<Response>
+
     /**
      * Get all users
      * @route GET /api/v1/users

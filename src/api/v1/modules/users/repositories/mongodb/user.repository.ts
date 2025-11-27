@@ -1,6 +1,6 @@
 
 import { SortOrder } from "mongoose";
-import { IRegisterData, IUpdateUser, IUserEntity } from "../../models/user.model.interface";
+import { IRegisterData, IUpdateUserData, IUserEntity } from "../../models/user.model.interface";
 import { IUserRepository } from "../user.repository.interface";
 import { User } from "../../models/mongoose/user.model";
 
@@ -50,7 +50,7 @@ export class MongoUserRepository implements IUserRepository {
     return updated ? this.toEntity(updated) : null;
   }
 
-  async updateAccountDetails(userId: string, updates: Partial<IUpdateUser>) {
+  async updateAccountDetails(userId: string, updates: Partial<IUpdateUserData>) {
     return this.updateById(userId, updates);
   }
 

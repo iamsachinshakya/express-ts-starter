@@ -1,4 +1,4 @@
-import { IRegisterData, IUpdateUser, IUserEntity } from "../models/user.model.interface";
+import { IRegisterData, IUpdateUserData, IUserEntity } from "../models/user.model.interface";
 
 export interface IUserRepository {
     create(data: IRegisterData): Promise<IUserEntity>;
@@ -10,7 +10,7 @@ export interface IUserRepository {
     updateById(id: string, data: Partial<IUserEntity>): Promise<IUserEntity | null>;
     deleteById(id: string): Promise<IUserEntity | null>;
     removeRefreshTokenById(userId: string): Promise<IUserEntity | null>;
-    updateAccountDetails(userId: string, updates: Partial<IUpdateUser>): Promise<IUserEntity | null>;
+    updateAccountDetails(userId: string, updates: Partial<IUpdateUserData>): Promise<IUserEntity | null>;
     isUsernameTaken(username: string): Promise<boolean>;
     aggregate?(pipeline: any[]): Promise<any[]>; // optional for MongoDB
 

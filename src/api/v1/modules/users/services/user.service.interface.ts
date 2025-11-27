@@ -1,4 +1,4 @@
-import { IUpdateUser, IUserEntity, IUserPreferences, ISocialLinks } from "../../users/models/user.model.interface";
+import { IUpdateUserData, IUserEntity, IUserPreferences, ISocialLinks, ICreateUserData } from "../../users/models/user.model.interface";
 
 export interface IUserService {
     /**
@@ -14,7 +14,7 @@ export interface IUserService {
     /**
      * Update user profile details (name, bio, social links, etc.)
      */
-    updateAccountDetails(userId: string, body: IUpdateUser): Promise<IUserEntity | null>;
+    updateAccountDetails(userId: string, body: IUpdateUserData): Promise<IUserEntity | null>;
 
     /**
      * Update user avatar/profile image
@@ -60,4 +60,6 @@ export interface IUserService {
      * Get user preferences
      */
     getPreferences(userId: string): Promise<IUserPreferences>;
+
+    createUser(data: ICreateUserData): Promise<IUserEntity | null>
 }

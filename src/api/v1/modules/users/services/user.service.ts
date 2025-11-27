@@ -2,15 +2,35 @@ import { ApiError } from "../../../common/utils/apiError";
 import { uploadOnCloudinary } from "../../../common/utils/cloudinary.util";
 import { RepositoryProvider } from "../../../RepositoryProvider";
 import {
-  IUpdateUser,
+  IUpdateUserData,
   IUserEntity,
   IUserPreferences,
   ISocialLinks,
+  ICreateUserData,
 } from "../../users/models/user.model.interface";
 import { IUserService } from "./user.service.interface";
 import { ErrorCode } from "../../../common/constants.ts/errorCodes";
+import { hashPassword } from "../../auth/utils/bcrypt.util";
 
 export class UserService implements IUserService {
+
+
+  async createUser(data: ICreateUserData): Promise<IUserEntity | null> {
+    const hashedPassword = await hashPassword(data.password);
+    if (!hashedPassword) {
+      throw new ApiError(
+        "Failed to hash password",
+        500,
+        ErrorCode.PASSWORD_HASH_FAILED
+      );
+    }
+
+    return await RepositoryProvider.userRepository.create({
+      ...data,
+      password: hashedPassword,
+    });
+
+  }
 
   async getAllUsers(): Promise<IUserEntity[]> {
     return await RepositoryProvider.userRepository.findAll();
@@ -24,17 +44,21 @@ export class UserService implements IUserService {
 
   async updateAccountDetails(
     userId: string,
-    body: IUpdateUser
+    body: IUpdateUserData
   ): Promise<IUserEntity | null> {
 
-    const allowedFields: (keyof IUpdateUser)[] = [
+    console.log("userdata ->", body);
+
+    const allowedFields: (keyof IUpdateUserData)[] = [
       "fullName",
       "email",
       "username",
       "bio",
+      "role",
+      "status"
     ];
 
-    const updates: Partial<IUpdateUser> = {};
+    const updates: Partial<IUpdateUserData> = {};
 
     for (const key of allowedFields) {
       const value = body[key];

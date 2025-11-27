@@ -74,7 +74,7 @@ authRouter.post(
  * @access  Private (Requires user update permission)
  */
 authRouter.post(
-  "/change-password",
+  "/:userId/change-password",
   authenticateJWT,
   requirePermission(PERMISSIONS.USER.CHANGE_PASSWORD),
   validateBody(updatePasswordSchema),
